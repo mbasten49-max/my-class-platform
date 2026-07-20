@@ -23,7 +23,7 @@ if not st.session_state["authenticated"]:
     
     password = st.text_input("أدخل رمز الاشتراك الخاص بك المستعمل:", type="password")
     if st.button("دخول المنصة"):
-        allowed_passwords = ["STUDENT_AHMED_77", "1513"]
+        allowed_passwords = ["ناصر دير كودك", "1513","خطر دير كودك""1514"]
         if password in allowed_passwords:
             st.session_state["authenticated"] = True
             st.rerun()
