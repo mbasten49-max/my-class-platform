@@ -62,7 +62,7 @@ else:
     st.write("استمع إلى الشروحات الصوتية التوضيحية:")
     
     # ضع روابط الملفات الصوتية هنا بين القوسين:
-    # st.audio(make_direct_link("ضع_رابط_الصوت_هنا"))
+    # st.audio(make_direct_link("https://drive.google.com/file/d/1Z_s7pVsJbr3gNQ-oCSJjtIuzB-pU4HhV/view?usp=drivesdk"))
     
     st.info("قم بوضع روابط الملفات الصوتية داخل الكود ليتم عرضها تلقائياً.")
 
@@ -73,7 +73,7 @@ else:
     st.write("شاهد نص التمارين والمسائل الفيزيائية والرياضية المرفقة:")
     
     # ضع روابط الصور هنا بين القوسين، ويمكنك كتابة عنوان تذكيري لكل صورة:
-    # st.image(make_direct_link("ضع_رابط_الصورة_الأولى_هنا"), caption="تمرين الحركة المستقيمة")
+    # st.image(make_direct_link("https://drive.google.com/file/d/1egWOoyQlT6f8FScmdwWFCl2e80SAPYm9/view?usp=drivesdk"), caption="تمرين الحركة المستقيمة")
     # st.image(make_direct_link("ضع_رابط_الصورة_الثانية_هنا"), caption="مسألة الدارة الكهربائية")
     
     st.info("قم بوضع روابط الصور داخل الكود ليتم عرضها تلقائياً.")
