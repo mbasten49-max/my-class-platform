@@ -24,8 +24,18 @@ if not st.session_state["authenticated"]:
     password = st.text_input("أدخل رمز الاشتراك الخاص بك المستعمل:", type="password")
     if st.button("دخول المنصة"):
         
-        # الأكواد مصلحة ومنفصلة هنا تماماً وبكل سلاسة لتعمل بالكامل:
-        allowed_passwords = ["1514", "خطر دير كودك", "1513", "ناصر دير كودك"]
+        # 🔑 قراءة الأكواد تلقائياً من ملف المفكرة الخاص بك students.txt
+        allowed_passwords = []
+        try:
+            with open("students.txt", "r", encoding="utf-8") as file:
+                for line in file:
+                    line = line.strip()
+                    # تخطي السطور الفارغة أو التعليقات التي تبدأ بـ #
+                    if line and not line.startswith("#"):
+                        allowed_passwords.append(line)
+        except FileNotFoundError:
+            # أكواد احتياطية في حال لم يجد النظام الملف مؤقتاً
+            allowed_passwords = ["1514", "1513", "STUDENT_AHMED_77"]
         
         if password in allowed_passwords:
             st.session_state["authenticated"] = True
