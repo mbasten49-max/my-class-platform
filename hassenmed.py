@@ -54,8 +54,8 @@ else:
     st.header("🎵 المقاطع الصوتية المتاحة")
     st.write("استمع إلى الشروحات الصوتية التوضيحية:")
     
-    # سطر المقطع الصوتي جاهز ومفعل بدون علامة #، فقط ينتظر وضع الرابط الحقيقي بين القوسين:
-    st.audio(make_direct_link("ضع_رابط_المقطع_الصوتي_هنا"))
+    # تم وضع رابط المقطع الصوتي الخاص بك بنجاح
+    st.audio(make_direct_link("https://drive.google.com/file/d/1Z_s7pVsJbr3gNQ-oCSJjtIuzB-pU4HhV/view?usp=drivesdk"))
 
     st.markdown("---")
 
@@ -63,5 +63,5 @@ else:
     st.header("🖼️ الصور والرسوم التوضيحية المتاحة")
     st.write("شاهد نص التمارين والمسائل الفيزيائية والرياضية المرفقة:")
     
-    # سطر الصورة جاهز ومفعل بدون علامة #، فقط ينتظر وضع الرابط الحقيقي بين القوسين:
-    st.image(make_direct_link("ضع_رابط_الصورة_هنا"), caption="تمرين اليوم")
+    # تم وضع رابط صورتك الخاصة بنجاح
+    st.image(make_direct_link("https://drive.google.com/file/d/1egWOoyQlT6f8FScmdwWFCl2e80SAPYm9/view?usp=drivesdk"), caption="تمرين الدرس الحالي")
