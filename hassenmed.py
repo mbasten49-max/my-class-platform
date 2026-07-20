@@ -4,7 +4,7 @@ import re
 # إعدادات الصفحة والعنوان
 st.set_page_config(page_title="منصة الأستاذ الحسن التعليمية", page_icon="📚", layout="centered")
 
-# دالة مطورة لتحويل روابط قوقل درايف إلى روابط تضمين متوافقة مع التحديثات الأمنية
+# دالة ذكية لتحويل روابط قوقل درايف إلى روابط تضمين متوافقة مع التحديثات الأمنية
 def get_embed_link(url):
     if "drive.google.com" in url:
         match = re.search(r'/d/([^/]+)', url)
@@ -23,7 +23,10 @@ if not st.session_state["authenticated"]:
     
     password = st.text_input("أدخل رمز الاشتراك الخاص بك المستعمل:", type="password")
     if st.button("دخول المنصة"):
-        allowed_passwords = ["ناصر دير كودك", "1513","خطر دير كودك""1514"]
+        
+        # الأكواد مصلحة ومنفصلة هنا تماماً وبكل سلاسة لتعمل بالكامل:
+        allowed_passwords = ["1514", "خطر دير كودك", "1513", "ناصر دير كودك"]
+        
         if password in allowed_passwords:
             st.session_state["authenticated"] = True
             st.rerun()
@@ -51,7 +54,6 @@ else:
     st.header("🎵 المقاطع الصوتية المتاحة")
     st.write("استمع إلى الشروحات الصوتية التوضيحية:")
     
-    # استخدام مكون iframe لعرض مشغل قوقل درايف الصوتي الرسمي بدون قيود
     audio_url = get_embed_link("https://drive.google.com/file/d/1Z_s7pVsJbr3gNQ-oCSJjtIuzB-pU4HhV/view?usp=drivesdk")
     st.components.v1.iframe(audio_url, height=150, scrolling=False)
 
@@ -61,6 +63,5 @@ else:
     st.header("🖼️ الصور والرسوم التوضيحية المتاحة")
     st.write("شاهد نص التمارين والمسائل الفيزيائية والرياضية المرفقة:")
     
-    # استخدام مكون iframe لعرض الصورة داخل إطار مستقر وبجودتها الكاملة
     image_url = get_embed_link("https://drive.google.com/file/d/1egWOoyQlT6f8FScmdwWFCl2e80SAPYm9/view?usp=drivesdk")
     st.components.v1.iframe(image_url, height=450, scrolling=True)
