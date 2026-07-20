@@ -4,7 +4,7 @@ import re
 # إعدادات الصفحة والعنوان
 st.set_page_config(page_title="منصة الأستاذ الحسن التعليمية", page_icon="📚", layout="centered")
 
-# دالة ذكية لتحويل روابط قوقل درايف إلى روابط تضمين متوافقة مع التحديثات الأمنية
+# دالة ذكية لتحويل روابط قوقل درايف إلى روابط تضمين
 def get_embed_link(url):
     if "drive.google.com" in url:
         match = re.search(r'/d/([^/]+)', url)
@@ -24,20 +24,30 @@ if not st.session_state["authenticated"]:
     password = st.text_input("أدخل رمز الاشتراك الخاص بك المستعمل:", type="password")
     if st.button("دخول المنصة"):
         
-        # 🔑 قراءة الأكواد تلقائياً من ملف المفكرة الخاص بك students.txt
         allowed_passwords = []
         try:
             with open("students.txt", "r", encoding="utf-8") as file:
                 for line in file:
                     line = line.strip()
-                    # تخطي السطور الفارغة أو التعليقات التي تبدأ بـ #
                     if line and not line.startswith("#"):
+                        # إضافة السطر بالكامل كخيار للدخول
                         allowed_passwords.append(line)
+                        
+                        # دالة ذكية: استخراج الأرقام فقط من السطر (مثل 1515) وإضافتها كخيار مستقل
+                        numbers_found = re.findall(r'\d+', line)
+                        for num in numbers_found:
+                            allowed_passwords.append(num)
+                            
+                        # دالة ذكية: استخراج النصوص فقط بدون أرقام (مثل الحيسن) وإضافتها كخيار مستقل
+                        text_only = re.sub(r'\d+', '', line).strip()
+                        if text_only:
+                            allowed_passwords.append(text_only)
         except FileNotFoundError:
-            # أكواد احتياطية في حال لم يجد النظام الملف مؤقتاً
-            allowed_passwords = ["1514", "1513", "STUDENT_AHMED_77"]
+            # أكواد احتياطية في حال غياب الملف
+            allowed_passwords = ["1514", "1513", "1515", "STUDENT_AHMED_77"]
         
-        if password in allowed_passwords:
+        # التحقق من المدخلات (تجاهل الفراغات وحالة الأحرف)
+        if password.strip() in allowed_passwords:
             st.session_state["authenticated"] = True
             st.rerun()
         else:
