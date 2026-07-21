@@ -28,7 +28,7 @@ if not st.session_state["authenticated"]:
     st.write("مرحباً بك! هذه المنصة محمية ومخصصة للطلاب المشتركين فقط.")
     
     # 📌 السطر المصلح هنا: نص واحد فقط داخل الدالة
-    password = st.text_input(" "E1 1514", "E2 1513", "E3 1515", "E4 1516","E5 1517" ,"E5 1518":", type="password")
+    password = st.text_input("أدخل رمز الاشتراك الخاص بك المستعمل:", type="password")
     
     if st.button("دخول المنصة"):
         clean_password = password.strip()
