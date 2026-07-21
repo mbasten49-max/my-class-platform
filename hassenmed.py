@@ -21,7 +21,7 @@ if not st.session_state["authenticated"]:
     st.title("🔒 منصة الأستاذ الحسن التعليمية")
     st.write("مرحباً بك! هذه المنصة محمية ومخصصة للطلاب المشتركين فقط.")
     
-    password = st.text_input("["E1 1514", "E2 1513", "E3 1515", "E4 1516","E5 1517" ,"E5 1518"]")
+    password = st.text_input("E1 1514", "E2 1513", "E3 1515", "E4 1516","E5 1517" ,"E5 1518")
     if st.button("دخول المنصة"):
         
         allowed_passwords = []
