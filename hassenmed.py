@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 🎨 Style CSS personnalisé
+# 🎨 Style CSS
 st.markdown("""
     <style>
     .stApp {
@@ -38,12 +38,12 @@ st.markdown("""
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
-        border-right: 5px solid #319795;
+        border-left: 5px solid #319795;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Fonction pour convertir les liens Google Drive en liens d'intégration
+# Fonction pour convertir les liens Google Drive
 def get_embed_link(url):
     if "drive.google.com" in url:
         match = re.search(r'/d/([^/]+)', url)
@@ -52,15 +52,13 @@ def get_embed_link(url):
             return f"https://drive.google.com/file/d/{file_id}/preview"
     return url
 
-# Registre des appareils
+# Registres
 if "code_device_registry" not in st.session_state:
     st.session_state["code_device_registry"] = {}
 
-# Registre des avis
 if "feedbacks" not in st.session_state:
     st.session_state["feedbacks"] = []
 
-# Gestion de l'authentification
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 if "student_code" not in st.session_state:
@@ -94,20 +92,9 @@ if not st.session_state["authenticated"]:
             allowed_passwords = ["1513", "1514", "1515", "STUDENT_AHMED_77"]
         
         if clean_password in allowed_passwords:
-            current_session_id = st.context.headers.get("User-Agent", "unknown_device")
-            
-            if clean_password in st.session_state["code_device_registry"]:
-                if st.session_state["code_device_registry"][clean_password] != current_session_id:
-                    st.error(f"🚨 Alerte de sécurité : Le code ({clean_password}) est déjà utilisé sur un autre appareil !")
-                else:
-                    st.session_state["authenticated"] = True
-                    st.session_state["student_code"] = clean_password
-                    st.rerun()
-            else:
-                st.session_state["code_device_registry"][clean_password] = current_session_id
-                st.session_state["authenticated"] = True
-                st.session_state["student_code"] = clean_password
-                st.rerun()
+            st.session_state["authenticated"] = True
+            st.session_state["student_code"] = clean_password
+            st.rerun()
         else:
             st.error("❌ Code d'accès incorrect ! Veuillez vérifier et réessayer.")
 
@@ -117,10 +104,8 @@ else:
     st.sidebar.title("👨‍🏫 Prof. El Hassan")
     st.sidebar.info(f"👤 Code actif : **{st.session_state['student_code']}**")
     
-    # Panneau de contrôle professeur
-    if st.sidebar.checkbox("🛠️ Panneau de contrôle Professeur"):
-        st.write("### 🕵️ Appareils connectés :")
-        st.json(st.session_state["code_device_registry"])
+    # Panneau professeur
+    if st.sidebar.checkbox("🛠️ Panneau Professeur"):
         st.write("### 💬 Évaluations des étudiants :")
         st.write(st.session_state["feedbacks"])
     
@@ -133,7 +118,7 @@ else:
     st.success("Bienvenue ! Bon visionnage et bon apprentissage.")
     st.markdown("---")
 
-    # 1️⃣ Végéos explicatives
+    # 1️⃣ Vidéos
     st.header("🎥 Vidéos Explicatives")
     col1, col2 = st.columns(2)
     
@@ -165,20 +150,19 @@ else:
 
     st.markdown("---")
 
-    # 4️⃣ Section d'évaluation
-    st.header("⭐ Évaluez la leçon et la plateforme")
+    # 4️⃣ Section d'évaluation (Version Compatible)
+    st.header("⭐ Évaluez la leçon")
     st.markdown('<div class="rating-box">', unsafe_allow_html=True)
     
-    rating = st.feedback("stars")
+    rating = st.selectbox("Notez la leçon :", ["⭐⭐⭐⭐⭐ (Excellent)", "⭐⭐⭐⭐ (Très bien)", "⭐⭐⭐ (Bien)", "⭐⭐ (Passable)", "⭐ (À améliorer)"])
     user_comment = st.text_input("Laissez un commentaire au Prof. El Hassan (Optionnel) :")
     
     if st.button("Envoyer l'avis 🌟"):
         st.session_state["feedbacks"].append({
             "code": st.session_state["student_code"],
-            "stars": rating,
+            "rating": rating,
             "comment": user_comment
         })
-        st.balloons()
         st.success("Merci beaucoup pour votre évaluation !")
         
     st.markdown('</div>', unsafe_allow_html=True)
