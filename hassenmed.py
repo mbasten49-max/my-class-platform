@@ -1,5 +1,6 @@
 import streamlit as st
 import re
+import os
 from datetime import datetime
 
 # Configuration de la page
@@ -68,7 +69,6 @@ if not st.session_state["authenticated"]:
         
         all_allowed = list(set(allowed_passwords + default_passwords))
         
-        # 🔒 تم تعديل الشرط هنا لرفض أي كود غير موجود في القائمة
         if clean_password in all_allowed:
             st.session_state["authenticated"] = True
             st.session_state["student_code"] = clean_password
@@ -85,6 +85,14 @@ else:
     
     if st.sidebar.checkbox("🛠️ Panneau Professeur"):
         st.write("### 👥 Historique des Connexions (سجل دخول التلاميذ) :")
+        
+        # زر لمسح السجل القديم
+        if st.button("🗑️ Effacer l'historique (مسح السجل القديم)"):
+            if os.path.exists("logins.txt"):
+                os.remove("logins.txt")
+                st.success("تم مسح السجل بنجاح!")
+                st.rerun()
+
         try:
             with open("logins.txt", "r", encoding="utf-8") as f:
                 logins_data = f.readlines()
