@@ -73,7 +73,7 @@ else:
     st.success("Bienvenue ! Bon visionnage et bon apprentissage.")
     st.markdown("---")
 
-    # 1️⃣ Vidéos Explicatives (الفيديوهات)
+    # 1️⃣ Vidéos Explicatives
     st.header("🎥 Vidéos Explicatives")
     col1, col2 = st.columns(2)
     
@@ -84,17 +84,29 @@ else:
 
     with col2:
         st.subheader("📹 Partie 2")
+        # ⚠️ يمكنك وضع رابط الفيديو الثاني هنا حينما يتوفر لديك
         video_2_url = get_embed_link("https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk")
         st.components.v1.iframe(video_2_url, height=315, scrolling=False)
 
     st.markdown("---")
 
-    # 2️⃣ Enregistrement Audio (المقطع الصوتي)
-    st.header("🎵 Enregistrement Audio")
+    # 2️⃣ Enregistrements Audio (المقاطع الصوتية)
+    st.header("🎵 Enregistrements Audio")
     st.caption("Écoutez les remarques importantes du cours :")
-    # 🔗 يمكنك استبدال الرابط أدناه برابط التسجيل الصوتي المباشر من Google Drive عند توفره
-    audio_url = get_embed_link("https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk")
-    st.components.v1.iframe(audio_url, height=120, scrolling=False)
+    
+    audio_col1, audio_col2 = st.columns(2)
+    
+    with audio_col1:
+        st.subheader("🎧 Audio 1")
+        # 🔗 تم إدراج رابط المقطع الصوتي الأول
+        audio_1_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
+        st.components.v1.iframe(audio_1_url, height=120, scrolling=False)
+
+    with audio_col2:
+        st.subheader("🎧 Audio 2")
+        # ⚠️ أرسل لي رابط المقطع الصوتي الثاني لوضعه هنا
+        audio_2_url = get_embed_link("ضع_رابط_المقطع_الصوتي_الثاني_هنا")
+        st.components.v1.iframe(audio_2_url, height=120, scrolling=False)
 
     st.markdown("---")
 
@@ -109,7 +121,6 @@ else:
 
     with img_col2:
         st.subheader("📄 Document 2")
-        # 🔗 تم تحديث رابط الصورة الثانية بالرابط الجديد
         doc_2_url = get_embed_link("https://drive.google.com/file/d/1DQRAtslUQY-T0EREb08bZhZxrcn4sGpx/view?usp=drivesdk")
         st.components.v1.iframe(doc_2_url, height=500, scrolling=True)
 
