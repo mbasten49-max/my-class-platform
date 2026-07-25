@@ -55,21 +55,27 @@ if not st.session_state["authenticated"]:
                     if line and not line.startswith("#"):
                         allowed_passwords.append(line)
         except FileNotFoundError:
-            allowed_passwords = [
-                "1513", "1514", "1515", "1516", "1517", "1518", "1519", "1520",
-                "1521", "1522", "1523", "1524", "1525", "1526", "1527", "1528", "1529", "1530",
-                "E1 1514", "E2 1513", "E3 1516", "E4 1517", "E5 1518", 
-                "E6 1519", "E7 1520", "E8 1521", "E9 1522", "E10 1523",
-                "STUDENT2026", "BAC2026", "PHYSICS101"
-            ]
+            pass
+
+        # الأكواد المعتمدة في النظام
+        default_passwords = [
+            "1513", "1514", "1515", "1516", "1517", "1518", "1519", "1520",
+            "1521", "1522", "1523", "1524", "1525", "1526", "1527", "1528", "1529", "1530",
+            "E1 1514", "E2 1513", "E3 1516", "E4 1517", "E5 1518", 
+            "E6 1519", "E7 1520", "E8 1521", "E9 1522", "E10 1523",
+            "STUDENT2026", "BAC2026", "PHYSICS101"
+        ]
         
-        if clean_password in allowed_passwords or len(clean_password) >= 3:
+        all_allowed = list(set(allowed_passwords + default_passwords))
+        
+        # 🔒 تم تعديل الشرط هنا لرفض أي كود غير موجود في القائمة
+        if clean_password in all_allowed:
             st.session_state["authenticated"] = True
             st.session_state["student_code"] = clean_password
-            log_student_login(clean_password) # تسجيل دخول التلميذ
+            log_student_login(clean_password)
             st.rerun()
         else:
-            st.error("❌ Code d'accès incorrect !")
+            st.error("❌ Code d'accès incorrect ! (كود الدخول غير صحيح)")
 
 # ================= 📖 CONTENU ÉDUCATIF =================
 else:
