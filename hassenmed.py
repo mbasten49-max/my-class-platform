@@ -89,7 +89,16 @@ else:
 
     st.markdown("---")
 
-    # 2️⃣ Documents et Images (الصور والوثائق)
+    # 2️⃣ Enregistrement Audio (المقطع الصوتي)
+    st.header("🎵 Enregistrement Audio")
+    st.caption("Écoutez les remarques importantes du cours :")
+    # 🔗 يمكنك استبدال الرابط أدناه برابط التسجيل الصوتي المباشر من Google Drive عند توفره
+    audio_url = get_embed_link("https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk")
+    st.components.v1.iframe(audio_url, height=120, scrolling=False)
+
+    st.markdown("---")
+
+    # 3️⃣ Documents et Images (الصور والوثائق)
     st.header("🖼️ Documents et Exercices")
     img_col1, img_col2 = st.columns(2)
     
@@ -100,12 +109,13 @@ else:
 
     with img_col2:
         st.subheader("📄 Document 2")
-        doc_2_url = get_embed_link("https://drive.google.com/file/d/1DTnn5l5ItjXM9ibMSlFk-uPunpaYMcz8/view?usp=drivesdk")
+        # 🔗 تم تحديث رابط الصورة الثانية بالرابط الجديد
+        doc_2_url = get_embed_link("https://drive.google.com/file/d/1DQRAtslUQY-T0EREb08bZhZxrcn4sGpx/view?usp=drivesdk")
         st.components.v1.iframe(doc_2_url, height=500, scrolling=True)
 
     st.markdown("---")
 
-    # 3️⃣ Section d'évaluation
+    # 4️⃣ Section d'évaluation
     st.header("⭐ Évaluation")
     rating = st.selectbox("Notez la leçon :", ["⭐⭐⭐⭐⭐ (Excellent)", "⭐⭐⭐⭐ (Très bien)", "⭐⭐⭐ (Bien)"])
     user_comment = st.text_input("Votre commentaire :")
