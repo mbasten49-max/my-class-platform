@@ -84,33 +84,21 @@ else:
 
     with col2:
         st.subheader("📹 Partie 2")
-        # ⚠️ يمكنك وضع رابط الفيديو الثاني هنا حينما يتوفر لديك
-        video_2_url = get_embed_link("https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk")
+        video_2_url = get_embed_link("https://drive.google.com/file/d/1P_p56TkizadnefcG_XUk8kenJwnDedSD/view?usp=drivesdk")
         st.components.v1.iframe(video_2_url, height=315, scrolling=False)
 
     st.markdown("---")
 
-    # 2️⃣ Enregistrements Audio (المقاطع الصوتية)
-    st.header("🎵 Enregistrements Audio")
+    # 2️⃣ Enregistrement Audio
+    st.header("🎵 Enregistrement Audio")
     st.caption("Écoutez les remarques importantes du cours :")
     
-    audio_col1, audio_col2 = st.columns(2)
-    
-    with audio_col1:
-        st.subheader("🎧 Audio 1")
-        # 🔗 تم إدراج رابط المقطع الصوتي الأول
-        audio_1_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
-        st.components.v1.iframe(audio_1_url, height=120, scrolling=False)
-
-    with audio_col2:
-        st.subheader("🎧 Audio 2")
-        # ⚠️ أرسل لي رابط المقطع الصوتي الثاني لوضعه هنا
-        audio_2_url = get_embed_link("ضع_رابط_المقطع_الصوتي_الثاني_هنا")
-        st.components.v1.iframe(audio_2_url, height=120, scrolling=False)
+    audio_1_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
+    st.components.v1.iframe(audio_1_url, height=120, scrolling=False)
 
     st.markdown("---")
 
-    # 3️⃣ Documents et Images (الصور والوثائق)
+    # 3️⃣ Documents et Images (متروكة كما هي)
     st.header("🖼️ Documents et Exercices")
     img_col1, img_col2 = st.columns(2)
     
