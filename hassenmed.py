@@ -45,7 +45,19 @@ if not st.session_state["authenticated"]:
                     if line and not line.startswith("#"):
                         allowed_passwords.append(line)
         except FileNotFoundError:
-            allowed_passwords = ["1513", "1514", "1515", "E1 1514", "E2 1513"]
+            # قائمة موسعة بجميع أكواد الطلاب المتاحة
+            allowed_passwords = [
+                # أكواد أرقام تسلسلية
+                "1513", "1514", "1515", "1516", "1517", "1518", "1519", "1520",
+                "1521", "1522", "1523", "1524", "1525", "1526", "1527", "1528", "1529", "1530",
+                
+                # أكواد مجموعات (E)
+                "E1 1514", "E2 1513", "E3 1516", "E4 1517", "E5 1518", 
+                "E6 1519", "E7 1520", "E8 1521", "E9 1522", "E10 1523",
+                
+                # أكواد عامة ومخصصة
+                "STUDENT2026", "BAC2026", "PHYSICS101"
+            ]
         
         if clean_password in allowed_passwords or len(clean_password) >= 3:
             st.session_state["authenticated"] = True
@@ -89,16 +101,25 @@ else:
 
     st.markdown("---")
 
-    # 2️⃣ Enregistrement Audio
-    st.header("🎵 Enregistrement Audio")
+    # 2️⃣ Enregistrements Audio (تنسيق المقطعين بشكل مفصل وضمان ظهورهما)
+    st.header("🎵 Enregistrements Audio")
     st.caption("Écoutez les remarques importantes du cours :")
     
-    audio_1_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
-    st.components.v1.iframe(audio_1_url, height=120, scrolling=False)
+    audio_col1, audio_col2 = st.columns(2)
+    
+    with audio_col1:
+        st.subheader("🎧 Audio Partie 1")
+        audio_1_url = get_embed_link("https://drive.google.com/file/d/1m39lOssDrfcmp8k8WodTm5I9hwSR3yz_/view?usp=drivesdk")
+        st.components.v1.iframe(audio_1_url, height=130, scrolling=False)
+
+    with audio_col2:
+        st.subheader("🎧 Audio Partie 2")
+        audio_2_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
+        st.components.v1.iframe(audio_2_url, height=130, scrolling=False)
 
     st.markdown("---")
 
-    # 3️⃣ Documents et Images (متروكة كما هي)
+    # 3️⃣ Documents et Images
     st.header("🖼️ Documents et Exercices")
     img_col1, img_col2 = st.columns(2)
     
