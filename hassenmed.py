@@ -1,9 +1,10 @@
 import streamlit as st
 import re
+from datetime import datetime
 
 # Configuration de la page
 st.set_page_config(
-    page_title="منصة الحسن التعليمية", 
+    page_title="منصة التحضير للباكالوريا", 
     page_icon="📚", 
     layout="wide"
 )
@@ -27,9 +28,18 @@ if "authenticated" not in st.session_state:
 if "student_code" not in st.session_state:
     st.session_state["student_code"] = ""
 
+# Fonction pour enregistrer les connexions des élèves
+def log_student_login(code):
+    try:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        with open("logins.txt", "a", encoding="utf-8") as file:
+            file.write(f"[{now}] Code: {code}\n")
+    except Exception as e:
+        pass
+
 # ================= 🔐 PAGE DE CONNEXION =================
 if not st.session_state["authenticated"]:
-    st.title("🔒 منصة الحسن التعليمية")
+    st.title("🔒 منصة التحضير للباكالوريا")
     st.write("Bienvenue ! Veuillez entrer votre code d'accès ci-dessous :")
     
     password = st.text_input("Code d'accès :", type="password")
@@ -45,23 +55,18 @@ if not st.session_state["authenticated"]:
                     if line and not line.startswith("#"):
                         allowed_passwords.append(line)
         except FileNotFoundError:
-            # قائمة موسعة بجميع أكواد الطلاب المتاحة
             allowed_passwords = [
-                # أكواد أرقام تسلسلية
                 "1513", "1514", "1515", "1516", "1517", "1518", "1519", "1520",
                 "1521", "1522", "1523", "1524", "1525", "1526", "1527", "1528", "1529", "1530",
-                
-                # أكواد مجموعات (E)
                 "E1 1514", "E2 1513", "E3 1516", "E4 1517", "E5 1518", 
                 "E6 1519", "E7 1520", "E8 1521", "E9 1522", "E10 1523",
-                
-                # أكواد عامة ومخصصة
                 "STUDENT2026", "BAC2026", "PHYSICS101"
             ]
         
         if clean_password in allowed_passwords or len(clean_password) >= 3:
             st.session_state["authenticated"] = True
             st.session_state["student_code"] = clean_password
+            log_student_login(clean_password) # تسجيل دخول التلميذ
             st.rerun()
         else:
             st.error("❌ Code d'accès incorrect !")
@@ -69,10 +74,23 @@ if not st.session_state["authenticated"]:
 # ================= 📖 CONTENU ÉDUCATIF =================
 else:
     # Barre latérale
-    st.sidebar.title("👨‍🏫 منصة الحسن التعليمية")
+    st.sidebar.title("👨‍🏫 منصة التحضير للباكالوريا")
     st.sidebar.info(f"Code actif : {st.session_state['student_code']}")
     
     if st.sidebar.checkbox("🛠️ Panneau Professeur"):
+        st.write("### 👥 Historique des Connexions (سجل دخول التلاميذ) :")
+        try:
+            with open("logins.txt", "r", encoding="utf-8") as f:
+                logins_data = f.readlines()
+                if logins_data:
+                    for entry in reversed(logins_data):
+                        st.text(entry.strip())
+                else:
+                    st.info("Aucune connexion enregistrée pour le moment.")
+        except FileNotFoundError:
+            st.info("Aucun سجل de connexion disponible.")
+
+        st.markdown("---")
         st.write("### 💬 Évaluations des étudiants :")
         st.write(st.session_state["feedbacks"])
     
@@ -101,7 +119,7 @@ else:
 
     st.markdown("---")
 
-    # 2️⃣ Enregistrements Audio (تنسيق المقطعين بشكل مفصل وضمان ظهورهما)
+    # 2️⃣ Enregistrements Audio
     st.header("🎵 Enregistrements Audio")
     st.caption("Écoutez les remarques importantes du cours :")
     
@@ -149,4 +167,4 @@ else:
         st.success("Merci pour votre évaluation !")
 
     st.markdown("---")
-    st.write("✨ **Bon succès avec منصة الحسن التعليمية** ✨")
+    st.write("✨ **Bon succès avec منصة التحضير للباكالوريا** ✨")
