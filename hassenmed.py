@@ -29,13 +29,42 @@ if "authenticated" not in st.session_state:
 if "student_code" not in st.session_state:
     st.session_state["student_code"] = ""
 
-# Fonction pour enregistrer les connexions des élèves
-def log_student_login(code):
+# Session-based Device Identifier (معرّف الجهاز)
+if "device_id" not in st.session_state:
+    st.session_state["device_id"] = str(datetime.now().timestamp())
+
+# Fonctions de gestion des sessions et connexions
+def get_active_sessions():
+    sessions = {}
+    if os.path.exists("active_sessions.txt"):
+        try:
+            with open("active_sessions.txt", "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and ":" in line:
+                        code, dev_id = line.split(":", 1)
+                        sessions[code] = dev_id
+        except Exception:
+            pass
+    return sessions
+
+def register_session(code, dev_id):
+    sessions = get_active_sessions()
+    sessions[code] = dev_id
+    try:
+        with open("active_sessions.txt", "w", encoding="utf-8") as f:
+            for c, d in sessions.items():
+                f.write(f"{c}:{d}\n")
+    except Exception:
+        pass
+
+def log_student_login(code, note=""):
     try:
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        entry = f"[{now}] Code: {code} {note}\n"
         with open("logins.txt", "a", encoding="utf-8") as file:
-            file.write(f"[{now}] Code: {code}\n")
-    except Exception as e:
+            file.write(entry)
+    except Exception:
         pass
 
 # ================= 🔐 PAGE DE CONNEXION =================
@@ -58,7 +87,6 @@ if not st.session_state["authenticated"]:
         except FileNotFoundError:
             pass
 
-        # الأكواد المعتمدة في النظام
         default_passwords = [
             "1513", "1514", "1515", "1516", "1517", "1518", "1519", "1520",
             "1521", "1522", "1523", "1524", "1525", "1526", "1527", "1528", "1529", "1530",
@@ -70,10 +98,19 @@ if not st.session_state["authenticated"]:
         all_allowed = list(set(allowed_passwords + default_passwords))
         
         if clean_password in all_allowed:
-            st.session_state["authenticated"] = True
-            st.session_state["student_code"] = clean_password
-            log_student_login(clean_password)
-            st.rerun()
+            active_sessions = get_active_sessions()
+            current_dev = st.session_state["device_id"]
+            
+            # التحقق مما إذا كان الكود مستخدماً من جهاز آخر
+            if clean_password in active_sessions and active_sessions[clean_password] != current_dev:
+                st.error("❌ Ce code est déjà utilisé sur un autre appareil ! (هذا الكود مستخدم حالياً من جهاز آخر)")
+                log_student_login(clean_password, "⚠️ [Tentative de partage / محاولة مشاركة الكود]")
+            else:
+                register_session(clean_password, current_dev)
+                st.session_state["authenticated"] = True
+                st.session_state["student_code"] = clean_password
+                log_student_login(clean_password, "✅ [Connexion réussie]")
+                st.rerun()
         else:
             st.error("❌ Code d'accès incorrect ! (كود الدخول غير صحيح)")
 
@@ -84,21 +121,32 @@ else:
     st.sidebar.info(f"Code actif : {st.session_state['student_code']}")
     
     if st.sidebar.checkbox("🛠️ Panneau Professeur"):
-        st.write("### 👥 Historique des Connexions (سجل دخول التلاميذ) :")
+        st.write("### 👥 Historique des Connexions (سجل الدخول ومحاولات المشاركة) :")
         
-        # زر لمسح السجل القديم
-        if st.button("🗑️ Effacer l'historique (مسح السجل القديم)"):
-            if os.path.exists("logins.txt"):
-                os.remove("logins.txt")
-                st.success("تم مسح السجل بنجاح!")
-                st.rerun()
+        col_b1, col_b2 = st.columns(2)
+        with col_b1:
+            if st.button("🗑️ Effacer l'historique"):
+                if os.path.exists("logins.txt"):
+                    os.remove("logins.txt")
+                    st.success("تم مسح السجل بنجاح!")
+                    st.rerun()
+
+        with col_b2:
+            if st.button("🔓 Réinitialiser les sessions (فك ربط الأجهزة)"):
+                if os.path.exists("active_sessions.txt"):
+                    os.remove("active_sessions.txt")
+                    st.success("تم فك ربط جميع الأكواد بالأجهزة بنجاح!")
+                    st.rerun()
 
         try:
             with open("logins.txt", "r", encoding="utf-8") as f:
                 logins_data = f.readlines()
                 if logins_data:
                     for entry in reversed(logins_data):
-                        st.text(entry.strip())
+                        if "⚠️" in entry:
+                            st.error(entry.strip())
+                        else:
+                            st.text(entry.strip())
                 else:
                     st.info("Aucune connexion enregistrée pour le moment.")
         except FileNotFoundError:
@@ -109,6 +157,17 @@ else:
         st.write(st.session_state["feedbacks"])
     
     if st.sidebar.button("Se déconnecter 🚪"):
+        # إزالة ربط الجلسة عند الخروج
+        sessions = get_active_sessions()
+        code = st.session_state["student_code"]
+        if code in sessions:
+            del sessions[code]
+            try:
+                with open("active_sessions.txt", "w", encoding="utf-8") as f:
+                    for c, d in sessions.items():
+                        f.write(f"{c}:{d}\n")
+            except Exception:
+                pass
         st.session_state["authenticated"] = False
         st.rerun()
 
