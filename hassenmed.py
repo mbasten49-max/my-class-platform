@@ -82,7 +82,7 @@ else:
     st.sidebar.title("👨‍🏫 منصة التحضير للباكالوريا")
     st.sidebar.info(f"الرمز النشط حالياً: {st.session_state['student_code']}")
     
-    # 📌 قائمة اختيار الدرس والمادة
+    # 📌 اختيار المادة
     selected_subject = st.sidebar.selectbox(
         "📚 اختر الدرس المطلوب:",
         ["📐 الرياضيات: الأعداد المركبة (Nombre Complexe)", "🧪 الفيزياء: السينماتيك والديناميك"]
@@ -117,13 +117,13 @@ else:
         st.session_state["authenticated"] = False
         st.rerun()
 
-    # ================= 📐 عرض درس الرياضيات =================
+    # ================= 📐 1. عرض درس الرياضيات =================
     if "الرياضيات" in selected_subject:
         st.title("📐 درس: الأعداد المركبة (Nombre Complexe)")
         st.success("مرحباً بكم في درس الرياضيات! نتمنى لكم تحصيلاً علمياً موفقاً.")
         st.markdown("---")
 
-        # 1️⃣ فيديو Canva الخاص بالرياضيات (يمكنك تعديل الرابط مستقبلاً عند إعداد فيديو الرياضيات)
+        # 🎥 فيديو شرح الرياضيات
         st.header("🎥 فيديو شرح درس الأعداد المركبة")
         canva_math_video = """
         <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
@@ -136,18 +136,35 @@ else:
 
         st.markdown("---")
 
-        # 2️⃣ أوراق ملخص الدرس (الصور المرفقة)
-        st.header("📝 ملخص قواعد الأعداد المركبة (Nombre Complexe)")
-        st.caption("تصفح أوراق ملخص الدرس والقوانين الأساسية:")
+        # 📄 أوراق ملخص الدرس (الصور الـ 6)
+        st.header("📝 ملخص وقواعد الدرس (من دفتر الشرح)")
+        st.caption("تصفح أوراق الملخص المرفقة أدناه لمراجعة كافة المفاهيم والقوانين:")
 
-        # تجميع الصور
-        math_docs = [
-            "https://drive.google.com/file/d/1u4GJMFLLG80uQ5EVnSrqNpLmGAudJ_ZN/view?usp=drivesdk", # أضف روابط صور الرياضيات هنا
+        # روابط الصور الـ 6 المرفقة من Google Drive
+        math_images = [
+            "https://drive.google.com/file/d/1E1JZjIgjbUA7FEIy4SsPhPSUbzkuYY03/view?usp=drivesdk", # الصفحة 1
+            "https://drive.google.com/file/d/1ojVmPZLu8lCtfypoH33ACE2B300xMoKx/view?usp=drivesdk", # الصفحة 2
+            "https://drive.google.com/file/d/1CRTsvEfMl7d8rAal6_8NOIhiLctyzX-r/view?usp=drivesdk", # الصفحة 3
+            "https://drive.google.com/file/d/18ITRuvewvGp0LipcmpsqmmHOw9a3Qy_k/view?usp=drivesdk", # الصفحة 4
+            "https://drive.google.com/file/d/1zKaKm2JR7WVuYqGtB6GLtrp376VtDIDu/view?usp=drivesdk", # الصفحة 5
+            "https://drive.google.com/file/d/1Ag1bViXkgaS-Dgx4oJ9hR0d-8TU8j50l/view?usp=drivesdk", # الصفحة 6
         ]
 
-        st.info("💡 يمكنك مراجعة القواعد الخاصة بالترافق (Conjugué)، القيمة المطلقة (Module)، والوسيط (Argument) وحل المعادلات في ℂ.")
+        # عرض الصور بشكل منظم في عمودين
+        col1, col2 = st.columns(2)
+        
+        for index, img_url in enumerate(math_images):
+            embed_url = get_embed_link(img_url)
+            if index % 2 == 0:
+                with col1:
+                    st.subheader(f"📄 الصفحة {index + 1}")
+                    st.components.v1.iframe(embed_url, height=500, scrolling=True)
+            else:
+                with col2:
+                    st.subheader(f"📄 الصفحة {index + 1}")
+                    st.components.v1.iframe(embed_url, height=500, scrolling=True)
 
-    # ================= 🧪 عرض درس الفيزياء =================
+    # ================= 🧪 2. عرض درس الفيزياء =================
     else:
         st.title("🧪 درس: السينماتيك والديناميك (Cinématique et Dynamique)")
         st.success("مرحباً بكم في درس الفيزياء! نتمنى لكم مشاهدة ممتعة وتحصيلاً موفقاً.")
