@@ -35,7 +35,7 @@ def log_student_login(code):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with open("logins.txt", "a", encoding="utf-8") as file:
             file.write(f"[{now}] رمز الدخول: {code}\n")
-    except Exception as e:
+    except Exception:
         pass
 
 # ================= 🔐 صفحة تسجيل الدخول =================
@@ -117,19 +117,27 @@ else:
     st.success("مرحباً بكم! نتمنى لكم مشاهدة ممتعة وتحصيلاً علمياً موفقاً.")
     st.markdown("---")
 
-    # 1️⃣ الفيديوهات الشارحة
+    # 1️⃣ الفيديوهات الشارحة (مدرجة عبر Canva)
     st.header("🎥 الفيديوهات الشارحة للدرس")
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("📹 الجزء الأول")
-        video_1_url = get_embed_link("https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk")
-        st.components.v1.iframe(video_1_url, height=315, scrolling=False)
+        st.subheader("📹 الجزء الأول (Canva)")
+        # تم إدراج رابط الفيديو الخاص بك من Canva بنجاح
+        canva_html_code_1 = """
+        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+            src="https://www.canva.com/design/DAHQq1eiNHg/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+          </iframe>
+        </div>
+        """
+        st.components.v1.html(canva_html_code_1, height=360)
 
     with col2:
         st.subheader("📹 الجزء الثاني")
+        # عندما تجهز رابط الفيديو الثاني من Canva، يمكنك تحويله لنفس تنسيق الجزء الأول
         video_2_url = get_embed_link("https://drive.google.com/file/d/1P_p56TkizadnefcG_XUk8kenJwnDedSD/view?usp=drivesdk")
-        st.components.v1.iframe(video_2_url, height=315, scrolling=False)
+        st.components.v1.iframe(video_2_url, height=360, scrolling=False)
 
     st.markdown("---")
 
@@ -142,12 +150,12 @@ else:
     with audio_col1:
         st.subheader("🎧 التسجيل الصوتي - الجزء 1")
         audio_1_url = get_embed_link("https://drive.google.com/file/d/1m39lOssDrfcmp8k8WodTm5I9hwSR3yz_/view?usp=drivesdk")
-        st.components.v1.iframe(audio_1_url, height=130, scrolling=False)
+        st.components.v1.iframe(audio_1_url, height=140, scrolling=False)
 
     with audio_col2:
         st.subheader("🎧 التسجيل الصوتي - الجزء 2")
         audio_2_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
-        st.components.v1.iframe(audio_2_url, height=130, scrolling=False)
+        st.components.v1.iframe(audio_2_url, height=140, scrolling=False)
 
     st.markdown("---")
 
