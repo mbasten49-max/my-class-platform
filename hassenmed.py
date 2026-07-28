@@ -117,27 +117,18 @@ else:
     st.success("مرحباً بكم! نتمنى لكم مشاهدة ممتعة وتحصيلاً علمياً موفقاً.")
     st.markdown("---")
 
-    # 1️⃣ الفيديوهات الشارحة (مدرجة عبر Canva)
-    st.header("🎥 الفيديوهات الشارحة للدرس")
-    col1, col2 = st.columns(2)
+    # 1️⃣ فيديو الشرح الرئيسي (مدرج عبر رابط Canva العام الجديد)
+    st.header("🎥 فيديو الشرح الرئيسي للدرس")
     
-    with col1:
-        st.subheader("📹 الجزء الأول (Canva)")
-        # تم إدراج رابط الفيديو الخاص بك من Canva بنجاح
-        canva_html_code_1 = """
-        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
-            src="https://www.canva.com/design/DAHQq1eiNHg/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
-          </iframe>
-        </div>
-        """
-        st.components.v1.html(canva_html_code_1, height=360)
-
-    with col2:
-        st.subheader("📹 الجزء الثاني")
-        # عندما تجهز رابط الفيديو الثاني من Canva، يمكنك تحويله لنفس تنسيق الجزء الأول
-        video_2_url = get_embed_link("https://drive.google.com/file/d/1P_p56TkizadnefcG_XUk8kenJwnDedSD/view?usp=drivesdk")
-        st.components.v1.iframe(video_2_url, height=360, scrolling=False)
+    # تضمين مشغل فيديو Canva بالرابط المباشر
+    canva_main_video = """
+    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+      <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+        src="https://canva.link/lxj0xkwjl8n3eno" allowfullscreen="allowfullscreen" allow="fullscreen">
+      </iframe>
+    </div>
+    """
+    st.components.v1.html(canva_main_video, height=520)
 
     st.markdown("---")
 
