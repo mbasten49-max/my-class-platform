@@ -82,12 +82,6 @@ else:
     st.sidebar.title("👨‍🏫 منصة التحضير للباكالوريا")
     st.sidebar.info(f"الرمز النشط حالياً: {st.session_state['student_code']}")
     
-    # 📌 اختيار المادة
-    selected_subject = st.sidebar.selectbox(
-        "📚 اختر الدرس المطلوب:",
-        ["📐 الرياضيات: الأعداد المركبة (Nombre Complexe)", "🧪 الفيزياء: السينماتيك والديناميك"]
-    )
-    
     # لوحة تحكم الأستاذ
     if st.sidebar.checkbox("🛠️ لوحة تحكم الأستاذ"):
         st.write("### 👥 سجل دخول التلاميذ:")
@@ -117,18 +111,28 @@ else:
         st.session_state["authenticated"] = False
         st.rerun()
 
-    # ================= 📐 1. عرض درس الرياضيات =================
-    if "الرياضيات" in selected_subject:
-        st.title("📐 درس: الأعداد المركبة (Nombre Complexe)")
+    # العنوان الرئيسي
+    st.title("📚 الدروس المتوفرة في المنصة")
+    st.write("اختر المادة والدرس للتصفح:")
+
+    # 📌 إنشاء تبويبات تنقل سهلة
+    tab_math, tab_physics = st.tabs([
+        "📐 الرياضيات: الأعداد المركبة (Nombre Complexe)", 
+        "🧪 الفيزياء: السينماتيك والديناميك"
+    ])
+
+    # ================= 📐 1. تبويب الرياضيات =================
+    with tab_math:
+        st.header("📐 درس: الأعداد المركبة (Nombre Complexe)")
         st.success("مرحباً بكم في درس الرياضيات! نتمنى لكم تحصيلاً علمياً موفقاً.")
         st.markdown("---")
 
-        # 🎥 فيديو شرح الرياضيات
-        st.header("🎥 فيديو شرح درس الأعداد المركبة")
+        # 🎥 فيديو شرح الرياضيات (كود التضمين الصحيح)
+        st.subheader("🎥 فيديو شرح درس الأعداد المركبة")
         canva_math_video = """
-        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
-            src="https://canva.link/lxj0xkwjl8n3eno" allowfullscreen="allowfullscreen" allow="fullscreen">
+        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden; border-radius: 8px; will-change: transform;">
+          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;"
+            src="https://www.canva.com/design/DAHQq1eiNHg/vGXhkTslHgO5iI9RKli6qg/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
           </iframe>
         </div>
         """
@@ -137,10 +141,9 @@ else:
         st.markdown("---")
 
         # 📄 أوراق ملخص الدرس (الصور الـ 6)
-        st.header("📝 ملخص وقواعد الدرس (من دفتر الشرح)")
+        st.subheader("📝 ملخص وقواعد الدرس (من دفتر الشرح)")
         st.caption("تصفح أوراق الملخص المرفقة أدناه لمراجعة كافة المفاهيم والقوانين:")
 
-        # روابط الصور الـ 6 المرفقة من Google Drive
         math_images = [
             "https://drive.google.com/file/d/1E1JZjIgjbUA7FEIy4SsPhPSUbzkuYY03/view?usp=drivesdk", # الصفحة 1
             "https://drive.google.com/file/d/1ojVmPZLu8lCtfypoH33ACE2B300xMoKx/view?usp=drivesdk", # الصفحة 2
@@ -150,31 +153,29 @@ else:
             "https://drive.google.com/file/d/1Ag1bViXkgaS-Dgx4oJ9hR0d-8TU8j50l/view?usp=drivesdk", # الصفحة 6
         ]
 
-        # عرض الصور بشكل منظم في عمودين
         col1, col2 = st.columns(2)
-        
         for index, img_url in enumerate(math_images):
             embed_url = get_embed_link(img_url)
             if index % 2 == 0:
                 with col1:
-                    st.subheader(f"📄 الصفحة {index + 1}")
+                    st.write(f"**📄 الصفحة {index + 1}**")
                     st.components.v1.iframe(embed_url, height=500, scrolling=True)
             else:
                 with col2:
-                    st.subheader(f"📄 الصفحة {index + 1}")
+                    st.write(f"**📄 الصفحة {index + 1}**")
                     st.components.v1.iframe(embed_url, height=500, scrolling=True)
 
-    # ================= 🧪 2. عرض درس الفيزياء =================
-    else:
-        st.title("🧪 درس: السينماتيك والديناميك (Cinématique et Dynamique)")
+    # ================= 🧪 2. تبويب الفيزياء =================
+    with tab_physics:
+        st.header("🧪 درس: السينماتيك والديناميك (Cinématique et Dynamique)")
         st.success("مرحباً بكم في درس الفيزياء! نتمنى لكم مشاهدة ممتعة وتحصيلاً موفقاً.")
         st.markdown("---")
 
-        st.header("🎥 فيديو الشرح الرئيسي للدرس")
+        st.subheader("🎥 فيديو الشرح الرئيسي للدرس")
         canva_physics_video = """
         <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
           <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
-            src="https://canva.link/lxj0xkwjl8n3eno" allowfullscreen="allowfullscreen" allow="fullscreen">
+            src="https://www.canva.com/design/DAHQq1eiNHg/vGXhkTslHgO5iI9RKli6qg/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
           </iframe>
         </div>
         """
@@ -182,27 +183,27 @@ else:
 
         st.markdown("---")
 
-        st.header("🎵 التسجيلات الصوتية")
+        st.subheader("🎵 التسجيلات الصوتية")
         audio_col1, audio_col2 = st.columns(2)
         with audio_col1:
-            st.subheader("🎧 التسجيل الصوتي - الجزء 1")
+            st.write("**🎧 التسجيل الصوتي - الجزء 1**")
             audio_1_url = get_embed_link("https://drive.google.com/file/d/1m39lOssDrfcmp8k8WodTm5I9hwSR3yz_/view?usp=drivesdk")
             st.components.v1.iframe(audio_1_url, height=140, scrolling=False)
         with audio_col2:
-            st.subheader("🎧 التسجيل الصوتي - الجزء 2")
+            st.write("**🎧 التسجيل الصوتي - الجزء 2**")
             audio_2_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
             st.components.v1.iframe(audio_2_url, height=140, scrolling=False)
 
         st.markdown("---")
 
-        st.header("🖼️ الوثائق والتمارين المرفقة")
+        st.subheader("🖼️ الوثائق والتمارين المرفقة")
         img_col1, img_col2 = st.columns(2)
         with img_col1:
-            st.subheader("📄 وثيقة / تمرين 1")
+            st.write("**📄 وثيقة / تمرين 1**")
             doc_1_url = get_embed_link("https://drive.google.com/file/d/1u4GJMFLLG80uQ5EVnSrqNpLmGAudJ_ZN/view?usp=drivesdk")
             st.components.v1.iframe(doc_1_url, height=500, scrolling=True)
         with img_col2:
-            st.subheader("📄 وثيقة / تمرين 2")
+            st.write("**📄 وثيقة / تمرين 2**")
             doc_2_url = get_embed_link("https://drive.google.com/file/d/1DQRAtslUQY-T0EREb08bZhZxrcn4sGpx/view?usp=drivesdk")
             st.components.v1.iframe(doc_2_url, height=500, scrolling=True)
 
@@ -215,7 +216,6 @@ else:
     if st.button("إرسال التقييم 🌟"):
         st.session_state["feedbacks"].append({
             "code": st.session_state["student_code"],
-            "subject": selected_subject,
             "rating": rating,
             "comment": user_comment
         })
