@@ -81,6 +81,7 @@ else:
     st.sidebar.title("👨‍🏫 منصة التحضير للباكالوريا")
     st.sidebar.info(f"الرمز النشط حالياً: {st.session_state['student_code']}")
     
+    # لوحة تحكم الأستاذ
     if st.sidebar.checkbox("🛠️ لوحة تحكم الأستاذ"):
         st.write("### 👥 سجل دخول التلاميذ:")
         if st.button("🗑️ مسح السجل القديم"):
@@ -110,6 +111,7 @@ else:
 
     st.title("📚 الدروس المتوفرة في المنصة")
 
+    # تبويبات المواد
     tab_math, tab_physics = st.tabs([
         "📐 الرياضيات: الأعداد المركبة (Nombre Complexe)", 
         "🧪 الفيزياء: السينماتيك والديناميك"
@@ -121,19 +123,38 @@ else:
         st.success("مرحباً بكم في درس الرياضيات! نتمنى لكم تحصيلاً علمياً موفقاً.")
         st.markdown("---")
 
-        # 🎥 فيديو الرياضيات عبر Google Drive
-        st.subheader("🎥 فيديو شرح درس الأعداد المركبة")
+        # 🎥 فيديوهات الشرح الـ 13
+        st.subheader("🎥 مقاطع فيديو شرح الدرس (13 مقطع)")
         
-        # استبدل هذا الرابط برابط فيديو Google Drive الخاص بالرياضيات عند رفعه
-        math_video_drive_url = "https://drive.google.com/file/d/1E1JZjIgjbUA7FEIy4SsPhPSUbzkuYY03/view?usp=drivesdk" 
-        embed_math_video = get_embed_link(math_video_drive_url)
+        # قائمة روابط الفيديوهات الـ 13
+        math_videos = {
+            "🎬 المقطع 1": "https://drive.google.com/file/d/1D0yv542YFbs0rwrLh_J-J2yOcRw8dzoW/view?usp=drivesdk",
+            "🎬 المقطع 2": "https://drive.google.com/file/d/1fao2HitEqILl5OOO7C8KZlW3PS0DcyEV/view?usp=drivesdk",
+            "🎬 المقطع 3": "https://drive.google.com/file/d/1HW_aYROuwFq9Nh6sj_QKJvCZP9rp-oAl/view?usp=drivesdk",
+            "🎬 المقطع 4": "https://drive.google.com/file/d/1TTGtHVyfnfuMFpoMCNkja0dkqGDmlPFz/view?usp=drivesdk",
+            "🎬 المقطع 5": "https://drive.google.com/file/d/1OpcXmTgDBE-p3SLg2texC9NMU2N9w_XI/view?usp=drivesdk",
+            "🎬 المقطع 6": "https://drive.google.com/file/d/1jude3qTsgJyqERkh0NPt1ZvzoDHb8J21/view?usp=drivesdk",
+            "🎬 المقطع 7": "https://drive.google.com/file/d/1_eqFA7pQvz7EAysbMawjQYYywr7eCjTL/view?usp=drivesdk",
+            "🎬 المقطع 8": "https://drive.google.com/file/d/13Z0Gq2JLbdyERd943kkMVDmgcitZgg4-/view?usp=drivesdk",
+            "🎬 المقطع 9": "https://drive.google.com/file/d/1F-GchpnwYIhPTG7Wwn5gQsKArIXwpaZ0/view?usp=drivesdk",
+            "🎬 المقطع 10": "https://drive.google.com/file/d/1F-GchpnwYIhPTG7Wwn5gQsKArIXwpaZ0/view?usp=drivesdk",
+            "🎬 المقطع 11": "https://drive.google.com/file/d/1JRqwiFxExVpswAunDmnRD28jVqWq4fXr/view?usp=drivesdk",
+            "🎬 المقطع 12": "https://drive.google.com/file/d/1p6GmWfgB59BqFQJAQ635dLu7N8ebB9Me/view?usp=drivesdk",
+            "🎬 المقطع 13": "https://drive.google.com/file/d/1Fzzvo2A5rnqw6X-AIz414zQBhTAzLPMm/view?usp=drivesdk"
+        }
+
+        # اختيار المقطع
+        selected_video = st.selectbox("📌 اختر المقطع المراد مشاهدته:", list(math_videos.keys()))
         
-        st.components.v1.iframe(embed_math_video, height=480)
+        # عرض المقطع المختار
+        selected_video_url = get_embed_link(math_videos[selected_video])
+        st.components.v1.iframe(selected_video_url, height=480)
 
         st.markdown("---")
 
         # 📄 ملخص الدرس (الصور الـ 6)
         st.subheader("📝 ملخص وقواعد الدرس (من دفتر الشرح)")
+        st.caption("تصفح أوراق الملخص المرفقة أدناه لمراجعة كافة المفاهيم والقوانين:")
 
         math_images = [
             "https://drive.google.com/file/d/1E1JZjIgjbUA7FEIy4SsPhPSUbzkuYY03/view?usp=drivesdk",
@@ -163,8 +184,14 @@ else:
         st.markdown("---")
 
         st.subheader("🎥 فيديو الشرح الرئيسي للدرس")
-        physics_video_url = get_embed_link("https://drive.google.com/file/d/1E1JZjIgjbUA7FEIy4SsPhPSUbzkuYY03/view?usp=drivesdk")
-        st.components.v1.iframe(physics_video_url, height=480)
+        canva_physics_video = """
+        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+            src="https://www.canva.com/design/DAHQq1eiNHg/vGXhkTslHgO5iI9RKli6qg/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+          </iframe>
+        </div>
+        """
+        st.components.v1.html(canva_physics_video, height=520)
 
         st.markdown("---")
 
