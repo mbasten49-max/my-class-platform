@@ -58,7 +58,6 @@ if not st.session_state["authenticated"]:
         except FileNotFoundError:
             pass
 
-        # الأكواد المعتمدة في النظام
         default_passwords = [
             "1513", "1514", "1515", "1516", "1517", "1518", "1519", "1520",
             "1521", "1522", "1523", "1524", "1525", "1526", "1527", "1528", "1529", "1530",
@@ -82,6 +81,12 @@ else:
     # القائمة الجانبية
     st.sidebar.title("👨‍🏫 منصة التحضير للباكالوريا")
     st.sidebar.info(f"الرمز النشط حالياً: {st.session_state['student_code']}")
+    
+    # 📌 قائمة اختيار الدرس والمادة
+    selected_subject = st.sidebar.selectbox(
+        "📚 اختر الدرس المطلوب:",
+        ["📐 الرياضيات: الأعداد المركبة (Nombre Complexe)", "🧪 الفيزياء: السينماتيك والديناميك"]
+    )
     
     # لوحة تحكم الأستاذ
     if st.sidebar.checkbox("🛠️ لوحة تحكم الأستاذ"):
@@ -112,61 +117,80 @@ else:
         st.session_state["authenticated"] = False
         st.rerun()
 
-    # العنوان الرئيسي
-    st.title("📚 درس: السينماتيك والديناميك (Cinématique et Dynamique)")
-    st.success("مرحباً بكم! نتمنى لكم مشاهدة ممتعة وتحصيلاً علمياً موفقاً.")
+    # ================= 📐 عرض درس الرياضيات =================
+    if "الرياضيات" in selected_subject:
+        st.title("📐 درس: الأعداد المركبة (Nombre Complexe)")
+        st.success("مرحباً بكم في درس الرياضيات! نتمنى لكم تحصيلاً علمياً موفقاً.")
+        st.markdown("---")
+
+        # 1️⃣ فيديو Canva الخاص بالرياضيات (يمكنك تعديل الرابط مستقبلاً عند إعداد فيديو الرياضيات)
+        st.header("🎥 فيديو شرح درس الأعداد المركبة")
+        canva_math_video = """
+        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+            src="https://canva.link/lxj0xkwjl8n3eno" allowfullscreen="allowfullscreen" allow="fullscreen">
+          </iframe>
+        </div>
+        """
+        st.components.v1.html(canva_math_video, height=520)
+
+        st.markdown("---")
+
+        # 2️⃣ أوراق ملخص الدرس (الصور المرفقة)
+        st.header("📝 ملخص قواعد الأعداد المركبة (Nombre Complexe)")
+        st.caption("تصفح أوراق ملخص الدرس والقوانين الأساسية:")
+
+        # تجميع الصور
+        math_docs = [
+            "https://drive.google.com/file/d/1u4GJMFLLG80uQ5EVnSrqNpLmGAudJ_ZN/view?usp=drivesdk", # أضف روابط صور الرياضيات هنا
+        ]
+
+        st.info("💡 يمكنك مراجعة القواعد الخاصة بالترافق (Conjugué)، القيمة المطلقة (Module)، والوسيط (Argument) وحل المعادلات في ℂ.")
+
+    # ================= 🧪 عرض درس الفيزياء =================
+    else:
+        st.title("🧪 درس: السينماتيك والديناميك (Cinématique et Dynamique)")
+        st.success("مرحباً بكم في درس الفيزياء! نتمنى لكم مشاهدة ممتعة وتحصيلاً موفقاً.")
+        st.markdown("---")
+
+        st.header("🎥 فيديو الشرح الرئيسي للدرس")
+        canva_physics_video = """
+        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+            src="https://canva.link/lxj0xkwjl8n3eno" allowfullscreen="allowfullscreen" allow="fullscreen">
+          </iframe>
+        </div>
+        """
+        st.components.v1.html(canva_physics_video, height=520)
+
+        st.markdown("---")
+
+        st.header("🎵 التسجيلات الصوتية")
+        audio_col1, audio_col2 = st.columns(2)
+        with audio_col1:
+            st.subheader("🎧 التسجيل الصوتي - الجزء 1")
+            audio_1_url = get_embed_link("https://drive.google.com/file/d/1m39lOssDrfcmp8k8WodTm5I9hwSR3yz_/view?usp=drivesdk")
+            st.components.v1.iframe(audio_1_url, height=140, scrolling=False)
+        with audio_col2:
+            st.subheader("🎧 التسجيل الصوتي - الجزء 2")
+            audio_2_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
+            st.components.v1.iframe(audio_2_url, height=140, scrolling=False)
+
+        st.markdown("---")
+
+        st.header("🖼️ الوثائق والتمارين المرفقة")
+        img_col1, img_col2 = st.columns(2)
+        with img_col1:
+            st.subheader("📄 وثيقة / تمرين 1")
+            doc_1_url = get_embed_link("https://drive.google.com/file/d/1u4GJMFLLG80uQ5EVnSrqNpLmGAudJ_ZN/view?usp=drivesdk")
+            st.components.v1.iframe(doc_1_url, height=500, scrolling=True)
+        with img_col2:
+            st.subheader("📄 وثيقة / تمرين 2")
+            doc_2_url = get_embed_link("https://drive.google.com/file/d/1DQRAtslUQY-T0EREb08bZhZxrcn4sGpx/view?usp=drivesdk")
+            st.components.v1.iframe(doc_2_url, height=500, scrolling=True)
+
+    # ================= ⭐ قسم التقييم والملاحظات =================
     st.markdown("---")
-
-    # 1️⃣ فيديو الشرح الرئيسي (مدرج عبر رابط Canva العام الجديد)
-    st.header("🎥 فيديو الشرح الرئيسي للدرس")
-    
-    # تضمين مشغل فيديو Canva بالرابط المباشر
-    canva_main_video = """
-    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-      <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
-        src="https://canva.link/lxj0xkwjl8n3eno" allowfullscreen="allowfullscreen" allow="fullscreen">
-      </iframe>
-    </div>
-    """
-    st.components.v1.html(canva_main_video, height=520)
-
-    st.markdown("---")
-
-    # 2️⃣ التسجيلات الصوتية
-    st.header("🎵 التسجيلات الصوتية")
-    st.caption("استمع إلى الملاحظات والتوضيحات الصوتية الهامة الخاصة بالدرس:")
-    
-    audio_col1, audio_col2 = st.columns(2)
-    
-    with audio_col1:
-        st.subheader("🎧 التسجيل الصوتي - الجزء 1")
-        audio_1_url = get_embed_link("https://drive.google.com/file/d/1m39lOssDrfcmp8k8WodTm5I9hwSR3yz_/view?usp=drivesdk")
-        st.components.v1.iframe(audio_1_url, height=140, scrolling=False)
-
-    with audio_col2:
-        st.subheader("🎧 التسجيل الصوتي - الجزء 2")
-        audio_2_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
-        st.components.v1.iframe(audio_2_url, height=140, scrolling=False)
-
-    st.markdown("---")
-
-    # 3️⃣ الوثائق والتمارين
-    st.header("🖼️ الوثائق والتمارين المرفقة")
-    img_col1, img_col2 = st.columns(2)
-    
-    with img_col1:
-        st.subheader("📄 وثيقة / تمرين 1")
-        doc_1_url = get_embed_link("https://drive.google.com/file/d/1u4GJMFLLG80uQ5EVnSrqNpLmGAudJ_ZN/view?usp=drivesdk")
-        st.components.v1.iframe(doc_1_url, height=500, scrolling=True)
-
-    with img_col2:
-        st.subheader("📄 وثيقة / تمرين 2")
-        doc_2_url = get_embed_link("https://drive.google.com/file/d/1DQRAtslUQY-T0EREb08bZhZxrcn4sGpx/view?usp=drivesdk")
-        st.components.v1.iframe(doc_2_url, height=500, scrolling=True)
-
-    st.markdown("---")
-
-    # 4️⃣ قسم التقييم والملاحظات
     st.header("⭐ تقييم الدرس")
     rating = st.selectbox("كيف تقيم فهمك لدرس اليوم؟", ["ممتاز ⭐⭐⭐⭐⭐", "جيد جداً ⭐⭐⭐⭐", "جيد ⭐⭐⭐", "يحتاج لمزيد من الشرح ⭐⭐"])
     user_comment = st.text_input("أضف تعليقك أو استفسارك حول الدرس هنا:")
@@ -174,6 +198,7 @@ else:
     if st.button("إرسال التقييم 🌟"):
         st.session_state["feedbacks"].append({
             "code": st.session_state["student_code"],
+            "subject": selected_subject,
             "rating": rating,
             "comment": user_comment
         })
