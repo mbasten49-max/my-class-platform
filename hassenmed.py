@@ -126,7 +126,6 @@ else:
         # 🎥 فيديوهات الشرح الـ 13
         st.subheader("🎥 مقاطع فيديو شرح الدرس (13 مقطع)")
         
-        # قائمة روابط الفيديوهات الـ 13
         math_videos = {
             "🎬 المقطع 1": "https://drive.google.com/file/d/1D0yv542YFbs0rwrLh_J-J2yOcRw8dzoW/view?usp=drivesdk",
             "🎬 المقطع 2": "https://drive.google.com/file/d/1fao2HitEqILl5OOO7C8KZlW3PS0DcyEV/view?usp=drivesdk",
@@ -143,12 +142,9 @@ else:
             "🎬 المقطع 13": "https://drive.google.com/file/d/1Fzzvo2A5rnqw6X-AIz414zQBhTAzLPMm/view?usp=drivesdk"
         }
 
-        # اختيار المقطع
-        selected_video = st.selectbox("📌 اختر المقطع المراد مشاهدته:", list(math_videos.keys()))
-        
-        # عرض المقطع المختار
-        selected_video_url = get_embed_link(math_videos[selected_video])
-        st.components.v1.iframe(selected_video_url, height=480)
+        selected_math_video = st.selectbox("📌 اختر مقطع الرياضيات المراد مشاهدته:", list(math_videos.keys()))
+        selected_math_video_url = get_embed_link(math_videos[selected_math_video])
+        st.components.v1.iframe(selected_math_video_url, height=480)
 
         st.markdown("---")
 
@@ -180,18 +176,20 @@ else:
     # ================= 🧪 2. تبويب الفيزياء =================
     with tab_physics:
         st.header("🧪 درس: السينماتيك والديناميك (Cinématique et Dynamique)")
-        st.success("مرحباً بكم في درس الفيزياء!")
+        st.success("مرحباً بكم في درس الفيزياء! نتمنى لكم مشاهدة ممتعة وتحصيلاً موفقاً.")
         st.markdown("---")
 
-        st.subheader("🎥 فيديو الشرح الرئيسي للدرس")
-        canva_physics_video = """
-        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
-            src="https://www.canva.com/design/DAHQq1eiNHg/vGXhkTslHgO5iI9RKli6qg/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
-          </iframe>
-        </div>
-        """
-        st.components.v1.html(canva_physics_video, height=520)
+        # 🎥 فيديوهات الفيزياء عبر Google Drive
+        st.subheader("🎥 مقاطع فيديو شرح الفيزياء")
+        
+        physics_videos = {
+            "🎬 المقطع 1": "https://drive.google.com/file/d/1P_p56TkizadnefcG_XUk8kenJwnDedSD/view?usp=drivesdk",
+            "🎬 المقطع 2": "https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk"
+        }
+
+        selected_physics_video = st.selectbox("📌 اختر مقطع الفيزياء المراد مشاهدته:", list(physics_videos.keys()))
+        selected_physics_video_url = get_embed_link(physics_videos[selected_physics_video])
+        st.components.v1.iframe(selected_physics_video_url, height=480)
 
         st.markdown("---")
 
