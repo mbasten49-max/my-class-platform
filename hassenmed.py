@@ -29,6 +29,9 @@ if "authenticated" not in st.session_state:
 if "student_code" not in st.session_state:
     st.session_state["student_code"] = ""
 
+if "admin_authenticated" not in st.session_state:
+    st.session_state["admin_authenticated"] = False
+
 # دالة لتسجيل دخول الطلاب
 def log_student_login(code):
     try:
@@ -58,7 +61,7 @@ if not st.session_state["authenticated"]:
         except FileNotFoundError:
             pass
 
-        # الأكواد المعتمدة في النظام
+        # الأكواد المعتمدة في النظام للطلاب
         default_passwords = [
             "1513", "1514", "1515", "1516", "1517", "1518", "1519", "1520",
             "1521", "1522", "1523", "1524", "1525", "1526", "1527", "1528", "1529", "1530",
@@ -88,8 +91,25 @@ else:
     
     st.sidebar.markdown("---")
 
-    # لوحة تحكم الأستاذ
-    if st.sidebar.checkbox("🛠️ لوحة تحكم الأستاذ"):
+    # 🔒 لوحة تحكم الأستاذ محمية بكلمة سر
+    st.sidebar.subheader("🛠️ لوحة تحكم الأستاذ")
+    
+    if not st.session_state["admin_authenticated"]:
+        admin_pass = st.sidebar.text_input("رمز الأستاذ:", type="password", key="admin_pass_input")
+        if st.sidebar.button("دخول الأستاذ 🔑"):
+            if admin_pass.strip() == "ADMIN2026":  # كلمة سر الأستاذ
+                st.session_state["admin_authenticated"] = True
+                st.sidebar.success("تم تسجيل دخول الأستاذ بنجاح!")
+                st.rerun()
+            else:
+                st.sidebar.error("❌ رمز الأستاذ غير صحيح")
+    else:
+        st.sidebar.success("🔓 لوحة الأستاذ مفتوحة")
+        if st.sidebar.button("قفل لوحة الأستاذ 🔒"):
+            st.session_state["admin_authenticated"] = False
+            st.rerun()
+
+        st.write("---")
         st.write("### 👥 سجل دخول التلاميذ:")
         
         if st.button("🗑️ مسح السجل القديم"):
@@ -112,9 +132,11 @@ else:
         st.markdown("---")
         st.write("### 💬 تقييمات وملاحظات الطلاب:")
         st.write(st.session_state["feedbacks"])
-    
+
+    st.sidebar.markdown("---")
     if st.sidebar.button("تسجيل الخروج 🚪"):
         st.session_state["authenticated"] = False
+        st.session_state["admin_authenticated"] = False
         st.rerun()
 
     # ================= ⚛️ مادة الفيزياء والكيمياء =================
