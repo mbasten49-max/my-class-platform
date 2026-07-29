@@ -35,7 +35,7 @@ def log_student_login(code):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with open("logins.txt", "a", encoding="utf-8") as file:
             file.write(f"[{now}] رمز الدخول: {code}\n")
-    except Exception:
+    except Exception as e:
         pass
 
 # ================= 🔐 صفحة تسجيل الدخول =================
@@ -58,6 +58,7 @@ if not st.session_state["authenticated"]:
         except FileNotFoundError:
             pass
 
+        # الأكواد المعتمدة في النظام
         default_passwords = [
             "1513", "1514", "1515", "1516", "1517", "1518", "1519", "1520",
             "1521", "1522", "1523", "1524", "1525", "1526", "1527", "1528", "1529", "1530",
@@ -78,12 +79,19 @@ if not st.session_state["authenticated"]:
 
 # ================= 📖 المحتوى التعليمي =================
 else:
+    # القائمة الجانبية
     st.sidebar.title("👨‍🏫 منصة التحضير للباكالوريا")
     st.sidebar.info(f"الرمز النشط حالياً: {st.session_state['student_code']}")
     
+    # اختيار المادة
+    subject = st.sidebar.radio("اختر المادة التعليمية:", ["الفيزياء والكيمياء ⚛️", "علوم الطبيعة والحياة 🧪"])
+    
+    st.sidebar.markdown("---")
+
     # لوحة تحكم الأستاذ
     if st.sidebar.checkbox("🛠️ لوحة تحكم الأستاذ"):
         st.write("### 👥 سجل دخول التلاميذ:")
+        
         if st.button("🗑️ مسح السجل القديم"):
             if os.path.exists("logins.txt"):
                 os.remove("logins.txt")
@@ -109,115 +117,110 @@ else:
         st.session_state["authenticated"] = False
         st.rerun()
 
-    st.title("📚 الدروس المتوفرة في المنصة")
-
-    # تبويبات المواد
-    tab_math, tab_physics = st.tabs([
-        "📐 الرياضيات: الأعداد المركبة (Nombre Complexe)", 
-        "🧪 الفيزياء: السينماتيك والديناميك"
-    ])
-
-    # ================= 📐 1. تبويب الرياضيات =================
-    with tab_math:
-        st.header("📐 درس: الأعداد المركبة (Nombre Complexe)")
-        st.success("مرحباً بكم في درس الرياضيات! نتمنى لكم تحصيلاً علمياً موفقاً.")
+    # ================= ⚛️ مادة الفيزياء والكيمياء =================
+    if subject == "الفيزياء والكيمياء ⚛️":
+        st.title("📚 درس: السينماتيك والديناميك (Cinématique et Dynamique)")
+        st.success("مرحباً بكم! نتمنى لكم مشاهدة ممتعة وتحصيلاً علمياً موفقاً.")
         st.markdown("---")
 
-        # 🎥 فيديوهات الشرح الـ 13
-        st.subheader("🎥 مقاطع فيديو شرح الدرس (13 مقطع)")
-        
-        math_videos = {
-            "🎬 المقطع 1": "https://drive.google.com/file/d/1D0yv542YFbs0rwrLh_J-J2yOcRw8dzoW/view?usp=drivesdk",
-            "🎬 المقطع 2": "https://drive.google.com/file/d/1fao2HitEqILl5OOO7C8KZlW3PS0DcyEV/view?usp=drivesdk",
-            "🎬 المقطع 3": "https://drive.google.com/file/d/1HW_aYROuwFq9Nh6sj_QKJvCZP9rp-oAl/view?usp=drivesdk",
-            "🎬 المقطع 4": "https://drive.google.com/file/d/1TTGtHVyfnfuMFpoMCNkja0dkqGDmlPFz/view?usp=drivesdk",
-            "🎬 المقطع 5": "https://drive.google.com/file/d/1OpcXmTgDBE-p3SLg2texC9NMU2N9w_XI/view?usp=drivesdk",
-            "🎬 المقطع 6": "https://drive.google.com/file/d/1jude3qTsgJyqERkh0NPt1ZvzoDHb8J21/view?usp=drivesdk",
-            "🎬 المقطع 7": "https://drive.google.com/file/d/1_eqFA7pQvz7EAysbMawjQYYywr7eCjTL/view?usp=drivesdk",
-            "🎬 المقطع 8": "https://drive.google.com/file/d/13Z0Gq2JLbdyERd943kkMVDmgcitZgg4-/view?usp=drivesdk",
-            "🎬 المقطع 9": "https://drive.google.com/file/d/1F-GchpnwYIhPTG7Wwn5gQsKArIXwpaZ0/view?usp=drivesdk",
-            "🎬 المقطع 10": "https://drive.google.com/file/d/1F-GchpnwYIhPTG7Wwn5gQsKArIXwpaZ0/view?usp=drivesdk",
-            "🎬 المقطع 11": "https://drive.google.com/file/d/1JRqwiFxExVpswAunDmnRD28jVqWq4fXr/view?usp=drivesdk",
-            "🎬 المقطع 12": "https://drive.google.com/file/d/1p6GmWfgB59BqFQJAQ635dLu7N8ebB9Me/view?usp=drivesdk",
-            "🎬 المقطع 13": "https://drive.google.com/file/d/1Fzzvo2A5rnqw6X-AIz414zQBhTAzLPMm/view?usp=drivesdk"
-        }
-
-        selected_math_video = st.selectbox("📌 اختر مقطع الرياضيات المراد مشاهدته:", list(math_videos.keys()))
-        selected_math_video_url = get_embed_link(math_videos[selected_math_video])
-        st.components.v1.iframe(selected_math_video_url, height=480)
-
-        st.markdown("---")
-
-        # 📄 ملخص الدرس (الصور الـ 6)
-        st.subheader("📝 ملخص وقواعد الدرس (من دفتر الشرح)")
-        st.caption("تصفح أوراق الملخص المرفقة أدناه لمراجعة كافة المفاهيم والقوانين:")
-
-        math_images = [
-            "https://drive.google.com/file/d/1E1JZjIgjbUA7FEIy4SsPhPSUbzkuYY03/view?usp=drivesdk",
-            "https://drive.google.com/file/d/1ojVmPZLu8lCtfypoH33ACE2B300xMoKx/view?usp=drivesdk",
-            "https://drive.google.com/file/d/1CRTsvEfMl7d8rAal6_8NOIhiLctyzX-r/view?usp=drivesdk",
-            "https://drive.google.com/file/d/18ITRuvewvGp0LipcmpsqmmHOw9a3Qy_k/view?usp=drivesdk",
-            "https://drive.google.com/file/d/1zKaKm2JR7WVuYqGtB6GLtrp376VtDIDu/view?usp=drivesdk",
-            "https://drive.google.com/file/d/1Ag1bViXkgaS-Dgx4oJ9hR0d-8TU8j50l/view?usp=drivesdk",
-        ]
-
+        # 1️⃣ الفيديوهات الشارحة
+        st.header("🎥 الفيديوهات الشارحة للدرس")
         col1, col2 = st.columns(2)
-        for index, img_url in enumerate(math_images):
-            embed_url = get_embed_link(img_url)
-            if index % 2 == 0:
-                with col1:
-                    st.write(f"**📄 الصفحة {index + 1}**")
-                    st.components.v1.iframe(embed_url, height=500, scrolling=True)
-            else:
-                with col2:
-                    st.write(f"**📄 الصفحة {index + 1}**")
-                    st.components.v1.iframe(embed_url, height=500, scrolling=True)
-
-    # ================= 🧪 2. تبويب الفيزياء =================
-    with tab_physics:
-        st.header("🧪 درس: السينماتيك والديناميك (Cinématique et Dynamique)")
-        st.success("مرحباً بكم في درس الفيزياء! نتمنى لكم مشاهدة ممتعة وتحصيلاً موفقاً.")
-        st.markdown("---")
-
-        # 🎥 فيديوهات الفيزياء عبر Google Drive
-        st.subheader("🎥 مقاطع فيديو شرح الفيزياء")
         
-        physics_videos = {
-            "🎬 المقطع 1": "https://drive.google.com/file/d/1P_p56TkizadnefcG_XUk8kenJwnDedSD/view?usp=drivesdk",
-            "🎬 المقطع 2": "https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk"
-        }
+        with col1:
+            st.subheader("📹 الجزء الأول")
+            video_1_url = get_embed_link("https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk")
+            st.components.v1.iframe(video_1_url, height=315, scrolling=False)
 
-        selected_physics_video = st.selectbox("📌 اختر مقطع الفيزياء المراد مشاهدته:", list(physics_videos.keys()))
-        selected_physics_video_url = get_embed_link(physics_videos[selected_physics_video])
-        st.components.v1.iframe(selected_physics_video_url, height=480)
+        with col2:
+            st.subheader("📹 الجزء الثاني")
+            video_2_url = get_embed_link("https://drive.google.com/file/d/1P_p56TkizadnefcG_XUk8kenJwnDedSD/view?usp=drivesdk")
+            st.components.v1.iframe(video_2_url, height=315, scrolling=False)
 
         st.markdown("---")
 
-        st.subheader("🎵 التسجيلات الصوتية")
+        # 2️⃣ التسجيلات الصوتية
+        st.header("🎵 التسجيلات الصوتية")
+        st.caption("استمع إلى الملاحظات والتوضيحات الصوتية الهامة الخاصة بالدرس:")
+        
         audio_col1, audio_col2 = st.columns(2)
+        
         with audio_col1:
-            st.write("**🎧 التسجيل الصوتي - الجزء 1**")
+            st.subheader("🎧 التسجيل الصوتي - الجزء 1")
             audio_1_url = get_embed_link("https://drive.google.com/file/d/1m39lOssDrfcmp8k8WodTm5I9hwSR3yz_/view?usp=drivesdk")
-            st.components.v1.iframe(audio_1_url, height=140, scrolling=False)
+            st.components.v1.iframe(audio_1_url, height=130, scrolling=False)
+
         with audio_col2:
-            st.write("**🎧 التسجيل الصوتي - الجزء 2**")
+            st.subheader("🎧 التسجيل الصوتي - الجزء 2")
             audio_2_url = get_embed_link("https://drive.google.com/file/d/1ATfgn9CAq4WvjHZniLbWfsbg8z-wprw2/view?usp=drivesdk")
-            st.components.v1.iframe(audio_2_url, height=140, scrolling=False)
+            st.components.v1.iframe(audio_2_url, height=130, scrolling=False)
 
         st.markdown("---")
 
-        st.subheader("🖼️ الوثائق والتمارين المرفقة")
+        # 3️⃣ الوثائق والتمارين
+        st.header("🖼️ الوثائق والتمارين المرفقة")
         img_col1, img_col2 = st.columns(2)
+        
         with img_col1:
-            st.write("**📄 وثيقة / تمرين 1**")
+            st.subheader("📄 وثيقة / تمرين 1")
             doc_1_url = get_embed_link("https://drive.google.com/file/d/1u4GJMFLLG80uQ5EVnSrqNpLmGAudJ_ZN/view?usp=drivesdk")
             st.components.v1.iframe(doc_1_url, height=500, scrolling=True)
+
         with img_col2:
-            st.write("**📄 وثيقة / تمرين 2**")
+            st.subheader("📄 وثيقة / تمرين 2")
             doc_2_url = get_embed_link("https://drive.google.com/file/d/1DQRAtslUQY-T0EREb08bZhZxrcn4sGpx/view?usp=drivesdk")
             st.components.v1.iframe(doc_2_url, height=500, scrolling=True)
 
-    # ================= ⭐ قسم التقييم والملاحظات =================
+    # ================= 🧪 مادة علوم الطبيعة والحياة =================
+    elif subject == "علوم الطبيعة والحياة 🧪":
+        st.title("🧪 دروس علوم الطبيعة والحياة")
+        st.success("مرحباً بكم في قسم العلوم الطبيعية! تابعوا الفيديوهات والصور الشارحة للدرس أدناه.")
+        st.markdown("---")
+
+        # 1️⃣ فيديوهات العلوم
+        st.header("🎥 الفيديوهات الشارحة")
+        
+        v_col1, v_col2 = st.columns(2)
+        with v_col1:
+            st.subheader("📹 الفيديو الأول")
+            sv_1 = get_embed_link("https://drive.google.com/file/d/13i0KO4fahDLxAPeU0UvE_mtLVVP_kHrj/view?usp=drivesdk")
+            st.components.v1.iframe(sv_1, height=315, scrolling=False)
+
+        with v_col2:
+            st.subheader("📹 الفيديو الثاني")
+            sv_2 = get_embed_link("https://drive.google.com/file/d/1WrQNZVDGfm_WX61L7p6Z3dKuHOafmY0d/view?usp=drivesdk")
+            st.components.v1.iframe(sv_2, height=315, scrolling=False)
+
+        st.markdown("---")
+
+        v_col3, v_col4 = st.columns(2)
+        with v_col3:
+            st.subheader("📹 الفيديو الثالث")
+            sv_3 = get_embed_link("https://drive.google.com/file/d/18zd5weNJiuhiHTO4LIAv_-SiNko_8o_0/view?usp=drivesdk")
+            st.components.v1.iframe(sv_3, height=315, scrolling=False)
+
+        with v_col4:
+            st.subheader("📹 الفيديو الرابع")
+            sv_4 = get_embed_link("https://drive.google.com/file/d/1qYR2uGxwbJAJ-B90C9U3yiDdE2I9prxY/view?usp=drivesdk")
+            st.components.v1.iframe(sv_4, height=315, scrolling=False)
+
+        st.markdown("---")
+
+        # 2️⃣ صور ووثائق العلوم
+        st.header("🖼️ الصور والوثائق الشارحة")
+        s_img1, s_img2 = st.columns(2)
+
+        with s_img1:
+            st.subheader("📄 الوثيقة / الصورة 1")
+            img_url_1 = get_embed_link("https://drive.google.com/file/d/1GhsHcaQOvjDLrQOkXWEPsWLiKFPV8FO5/view?usp=drivesdk")
+            st.components.v1.iframe(img_url_1, height=500, scrolling=True)
+
+        with s_img2:
+            st.subheader("📄 الوثيقة / الصورة 2")
+            img_url_2 = get_embed_link("https://drive.google.com/file/d/17zW26q2O1Fiqjs4MPtzSIfGrSLNXXI7h/view?usp=drivesdk")
+            st.components.v1.iframe(img_url_2, height=500, scrolling=True)
+
+    # ================= 4️⃣ قسم التقييم والملاحظات =================
     st.markdown("---")
     st.header("⭐ تقييم الدرس")
     rating = st.selectbox("كيف تقيم فهمك لدرس اليوم؟", ["ممتاز ⭐⭐⭐⭐⭐", "جيد جداً ⭐⭐⭐⭐", "جيد ⭐⭐⭐", "يحتاج لمزيد من الشرح ⭐⭐"])
@@ -226,6 +229,7 @@ else:
     if st.button("إرسال التقييم 🌟"):
         st.session_state["feedbacks"].append({
             "code": st.session_state["student_code"],
+            "subject": subject,
             "rating": rating,
             "comment": user_comment
         })
