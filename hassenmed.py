@@ -28,6 +28,22 @@ def get_direct_link(url):
             return f"https://drive.google.com/file/d/{file_id}/view?usp=sharing"
     return url
 
+# دالة لعرض الفيديو بشكل منظم وسهل للطلاب
+def render_video_box(title, raw_url, height=315):
+    st.subheader(title)
+    embed_url = get_embed_link(raw_url)
+    direct_url = get_direct_link(raw_url)
+    
+    # استخدام تبويبات لتسهيل الخيارات على الطالب
+    tab1, tab2 = st.tabs(["🎬 تشغيل داخل المنصة", "🔗 رابط خارجي سريح"])
+    
+    with tab1:
+        st.components.v1.iframe(embed_url, height=height, scrolling=False)
+    
+    with tab2:
+        st.info("💡 إذا لم يشتغل الفيديو أعلاه بشكل جيد بسبب بطء الإنترنت، انقر على الزر أدناه لمشاهدته فوراً:")
+        st.link_button(f"🚀 فتح {title} في مشغّل جديد", direct_url, use_container_width=True)
+
 # إدارة حالة الجلسة والتقييمات
 if "feedbacks" not in st.session_state:
     st.session_state["feedbacks"] = []
@@ -130,6 +146,13 @@ else:
     if subject == "الفيزياء والكيمياء ⚛️":
         st.title("📚 درس: السينماتيك والديناميك (Cinématique et Dynamique)")
         st.success("مرحباً بكم! نتمنى لكم مشاهدة ممتعة وتحصيلاً علمياً موفقاً.")
+        
+        with st.expander("💡 إرشادات مهمة للتلاميذ لتسهيل مشاهدة الفيديوهات"):
+            st.write("""
+            - إذا واجهت صعوبة في تشغيل أي فيديو داخل الصفحة، يمكنك الانتقال إلى تبويب **"🔗 رابط خارجي سريع"** والضغط على الزر لفتحه مباشرة.
+            - تأكد من استقرار اتصال الإنترنت لضمان جودة العرض.
+            """)
+            
         st.markdown("---")
 
         # 1️⃣ الفيديوهات الشارحة
@@ -138,70 +161,40 @@ else:
         # الفيديوهات الأساسية
         col_a, col_b = st.columns(2)
         with col_a:
-            st.subheader("📹 مقدمة - الجزء الأول")
-            v1_raw = "https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(v1_raw), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(v1_raw)})")
+            render_video_box("📹 مقدمة - الجزء الأول", "https://drive.google.com/file/d/1akAEFa8OnXTwmN1HXofoO6CG0FqkG7ah/view?usp=drivesdk")
 
         with col_b:
-            st.subheader("📹 مقدمة - الجزء الثاني")
-            v2_raw = "https://drive.google.com/file/d/1P_p56TkizadnefcG_XUk8kenJwnDedSD/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(v2_raw), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(v2_raw)})")
+            render_video_box("📹 مقدمة - الجزء الثاني", "https://drive.google.com/file/d/1P_p56TkizadnefcG_XUk8kenJwnDedSD/view?usp=drivesdk")
 
         st.markdown("##### 🎬 سلسلة الفيديوهات التفصيلية (V1 - V8)")
         
         v_col1, v_col2 = st.columns(2)
         with v_col1:
-            st.subheader("📹 الفيديو الأول (V1)")
-            url_v1 = "https://drive.google.com/file/d/1_eTKz82AyRHBvO_KJx9t73IMmq1xgwws/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(url_v1), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(url_v1)})")
+            render_video_box("📹 الفيديو الأول (V1)", "https://drive.google.com/file/d/1_eTKz82AyRHBvO_KJx9t73IMmq1xgwws/view?usp=drivesdk")
 
         with v_col2:
-            st.subheader("📹 الفيديو الثاني (V2)")
-            url_v2 = "https://drive.google.com/file/d/1MHeoWceHGZUtJvRj5gjcZogYoy_WhOT3/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(url_v2), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(url_v2)})")
+            render_video_box("📹 الفيديو الثاني (V2)", "https://drive.google.com/file/d/1MHeoWceHGZUtJvRj5gjcZogYoy_WhOT3/view?usp=drivesdk")
 
         v_col3, v_col4 = st.columns(2)
         with v_col3:
-            st.subheader("📹 الفيديو الثالث (V3)")
-            url_v3 = "https://drive.google.com/file/d/1N6XoTAZh5JChA8nIyf_uBYNLHuuPvl-N/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(url_v3), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(url_v3)})")
+            render_video_box("📹 الفيديو الثالث (V3)", "https://drive.google.com/file/d/1N6XoTAZh5JChA8nIyf_uBYNLHuuPvl-N/view?usp=drivesdk")
 
         with v_col4:
-            st.subheader("📹 الفيديو الرابع (V4)")
-            url_v4 = "https://drive.google.com/file/d/1SCvZzBvC6Eu4haTxpm9PWIvM_W0fju-Y/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(url_v4), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(url_v4)})")
+            render_video_box("📹 الفيديو الرابع (V4)", "https://drive.google.com/file/d/1SCvZzBvC6Eu4haTxpm9PWIvM_W0fju-Y/view?usp=drivesdk")
 
         v_col5, v_col6 = st.columns(2)
         with v_col5:
-            st.subheader("📹 الفيديو الخامس (V5)")
-            url_v5 = "https://drive.google.com/file/d/1BWghiTBgdyRIcEEuWUjM2gpddnDl8-Xi/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(url_v5), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(url_v5)})")
+            render_video_box("📹 الفيديو الخامس (V5)", "https://drive.google.com/file/d/1BWghiTBgdyRIcEEuWUjM2gpddnDl8-Xi/view?usp=drivesdk")
 
         with v_col6:
-            st.subheader("📹 الفيديو السادس (V6)")
-            url_v6 = "https://drive.google.com/file/d/1i6Jf1udgXvtEnJoSgR6IflM9YNlCBe8k/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(url_v6), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(url_v6)})")
+            render_video_box("📹 الفيديو السادس (V6)", "https://drive.google.com/file/d/1i6Jf1udgXvtEnJoSgR6IflM9YNlCBe8k/view?usp=drivesdk")
 
         v_col7, v_col8 = st.columns(2)
         with v_col7:
-            st.subheader("📹 الفيديو السابع (V7)")
-            url_v7 = "https://drive.google.com/file/d/1RbqsJ14J1GLUK4M2wDi-iwp5HH1CZ7vA/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(url_v7), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(url_v7)})")
+            render_video_box("📹 الفيديو السابع (V7)", "https://drive.google.com/file/d/1RbqsJ14J1GLUK4M2wDi-iwp5HH1CZ7vA/view?usp=drivesdk")
 
         with v_col8:
-            st.subheader("📹 الفيديو الثامن (V8)")
-            url_v8 = "https://drive.google.com/file/d/1vcO8hml4ov_0kL4wqaPM195tTS811p6m/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(url_v8), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(url_v8)})")
+            render_video_box("📹 الفيديو الثامن (V8)", "https://drive.google.com/file/d/1vcO8hml4ov_0kL4wqaPM195tTS811p6m/view?usp=drivesdk")
 
         st.markdown("---")
 
@@ -310,31 +303,19 @@ else:
         
         v_col1, v_col2 = st.columns(2)
         with v_col1:
-            st.subheader("📹 الفيديو الأول")
-            sv_1_raw = "https://drive.google.com/file/d/13i0KO4fahDLxAPeU0UvE_mtLVVP_kHrj/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(sv_1_raw), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(sv_1_raw)})")
+            render_video_box("📹 الفيديو الأول", "https://drive.google.com/file/d/13i0KO4fahDLxAPeU0UvE_mtLVVP_kHrj/view?usp=drivesdk")
 
         with v_col2:
-            st.subheader("📹 الفيديو الثاني")
-            sv_2_raw = "https://drive.google.com/file/d/1WrQNZVDGfm_WX61L7p6Z3dKuHOafmY0d/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(sv_2_raw), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(sv_2_raw)})")
+            render_video_box("📹 الفيديو الثاني", "https://drive.google.com/file/d/1WrQNZVDGfm_WX61L7p6Z3dKuHOafmY0d/view?usp=drivesdk")
 
         st.markdown("---")
 
         v_col3, v_col4 = st.columns(2)
         with v_col3:
-            st.subheader("📹 الفيديو الثالث")
-            sv_3_raw = "https://drive.google.com/file/d/18zd5weNJiuhiHTO4LIAv_-SiNko_8o_0/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(sv_3_raw), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(sv_3_raw)})")
+            render_video_box("📹 الفيديو الثالث", "https://drive.google.com/file/d/18zd5weNJiuhiHTO4LIAv_-SiNko_8o_0/view?usp=drivesdk")
 
         with v_col4:
-            st.subheader("📹 الفيديو الرابع")
-            sv_4_raw = "https://drive.google.com/file/d/1qYR2uGxwbJAJ-B90C9U3yiDdE2I9prxY/view?usp=drivesdk"
-            st.components.v1.iframe(get_embed_link(sv_4_raw), height=315, scrolling=False)
-            st.markdown(f"[🔗 فتح الفيديو في نافذة جديدة]({get_direct_link(sv_4_raw)})")
+            render_video_box("📹 الفيديو الرابع", "https://drive.google.com/file/d/1qYR2uGxwbJAJ-B90C9U3yiDdE2I9prxY/view?usp=drivesdk")
 
         st.markdown("---")
 
